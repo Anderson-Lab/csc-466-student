@@ -13,6 +13,13 @@ jupyter:
     name: python3
 ---
 
+# Name(s)
+**PUT YOUR FULL NAME(S) HERE**
+
+
+**Instructions:** This is an individual assignment, but you may discuss your code with your neighbors.
+
+
 # Python and NumPy
 
 While other IDEs exist for Python development and for data science related activities, one of the most popular environments is Jupyter Notebooks.
