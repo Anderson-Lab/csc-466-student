@@ -13,12 +13,18 @@ jupyter:
     name: python3
 ---
 
+# Name(s)
+**PUT YOUR FULL NAME(S) HERE**
+
+
+**Instructions:** This is an individual assignment, but you may discuss your code with your neighbors.
+
+
 # Python and NumPy
 
 While other IDEs exist for Python development and for data science related activities, one of the most popular environments is Jupyter Notebooks.
 
 This lab is not intended to teach you everything you will use in this course. Instead, it is designed to give you exposure to some critical components from NumPy that we will rely upon routinely.
-
 
 ## Exercise 0
 Please read and reference the following as your progress through this course. 
@@ -41,12 +47,15 @@ For the following exercises please read the Python appendix in the Marsland text
 
 ```python
 # YOUR SOLUTION HERE
+#a=1000
+print('this is my answer',a+1) 
 ```
 
 ## Exercise 2
 
 ```python
 # YOUR SOLUTION HERE
+a=2000
 ```
 
 ## Exercise 3
