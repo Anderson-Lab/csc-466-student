@@ -90,7 +90,7 @@ titanic_df
 titanic_df.describe()
 ```
 
-## Exercise 1
+## Exercise 0
 In your own words, describe the preprocessing steps I took above.
 
 
@@ -148,7 +148,7 @@ display(prior(titanic_df["survived"],yname="survived"))
 ## Exercise 4
 Now you are ready to calculate the posterior probabilities for a given sample. Write and test the following function that returns a dictionary where the keys are of the form "pclass=1,sex=male,age=60|survived=0". Make sure you return 0 if the specific combination of values does not exist.
 <pre>
-def posterior(probs,priors,x):
+def posteriors(probs,priors,x):
     return probs
 </pre>
 
