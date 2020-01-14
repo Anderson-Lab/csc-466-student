@@ -13,6 +13,13 @@ jupyter:
     name: python3
 ---
 
+# Name(s)
+**PUT YOUR FULL NAME(S) HERE**
+
+
+**Instructions:** This is an individual assignment, but you may discuss your code with your neighbors.
+
+
 # Python and NumPy
 
 While other IDEs exist for Python development and for data science related activities, one of the most popular environments is Jupyter Notebooks.
@@ -97,6 +104,10 @@ Repeat exercise A.2 using a DataFrame instead.
 # YOUR SOLUTION HERE
 ```
 
+```python
+b.values
+```
+
 ## Exercise 10
 Repeat exercise A.3 using DataFrames instead.
 
@@ -121,6 +132,21 @@ titanic_df = pd.read_csv(
 titanic_df
 ```
 
+```python
+titanic_df.index
+```
+
+```python
+df = titanic_df.set_index('sex').loc['female']
+df
+```
+
+```python
+inxs = np.where(titanic_df.survived==1)
+inxs
+titanic_df.iloc[inxs]
+```
+
 Notice how we have nice headers and mixed datatypes? That is one of the reasons we might use Pandas. Please refresh your memory by looking at the 10 minutes to Pandas again, but then answer the following.
 
 
@@ -141,6 +167,11 @@ titanic_df.set_index('sex',inplace=True)
 
 ## Exercise 14
 How do you reset the index?
+
+```python
+titanic_df.reset_index(inplace=True)
+
+```
 
 ```python
 ## YOUR SOLUTION HERE

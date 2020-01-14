@@ -26,6 +26,7 @@ While other IDEs exist for Python development and for data science related activ
 
 This lab is not intended to teach you everything you will use in this course. Instead, it is designed to give you exposure to some critical components from NumPy that we will rely upon routinely.
 
+
 ## Exercise 0
 Please read and reference the following as your progress through this course. 
 
@@ -47,15 +48,12 @@ For the following exercises please read the Python appendix in the Marsland text
 
 ```python
 # YOUR SOLUTION HERE
-#a=1000
-print('this is my answer',a+1) 
 ```
 
 ## Exercise 2
 
 ```python
 # YOUR SOLUTION HERE
-a=2000
 ```
 
 ## Exercise 3
@@ -88,7 +86,7 @@ a=2000
 # YOUR SOLUTION HERE
 ```
 
-## Excercises 8-???
+## Excercises 8-11
 While the Marsland book avoids using another popular package called Pandas, we will use it at times throughout this course. Please read and study [10 minutes to Pandas](https://pandas.pydata.org/pandas-docs/stable/getting_started/10min.html) before proceeding to any of the exercises below.
 
 
@@ -104,6 +102,10 @@ Repeat exercise A.2 using a DataFrame instead.
 
 ```python
 # YOUR SOLUTION HERE
+```
+
+```python
+b.values
 ```
 
 ## Exercise 10
@@ -130,6 +132,21 @@ titanic_df = pd.read_csv(
 titanic_df
 ```
 
+```python
+titanic_df.index
+```
+
+```python
+df = titanic_df.set_index('sex').loc['female']
+df
+```
+
+```python
+inxs = np.where(titanic_df.survived==1)
+inxs
+titanic_df.iloc[inxs]
+```
+
 Notice how we have nice headers and mixed datatypes? That is one of the reasons we might use Pandas. Please refresh your memory by looking at the 10 minutes to Pandas again, but then answer the following.
 
 
@@ -150,6 +167,11 @@ titanic_df.set_index('sex',inplace=True)
 
 ## Exercise 14
 How do you reset the index?
+
+```python
+titanic_df.reset_index(inplace=True)
+
+```
 
 ```python
 ## YOUR SOLUTION HERE
