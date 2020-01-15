@@ -106,8 +106,7 @@ def compute_priors(y):
 
 ```python
 # YOUR SOLUTION HERE
-# CODE FOR TESTING
-compute_priors(titanic_df['survived'])
+compute_priors(titanic_df['survived'],yname='survived')
 ```
 
 ## Exercise 2
@@ -120,7 +119,7 @@ def specific_class_conditional(y,yv,x,xv):
 
 ```python
 # YOUR SOLUTION HERE
-specific_class_conditional(titanic_df['survived'],0,titanic_df['sex'],'female')
+specific_class_conditional(titanic_df['sex'],'female',titanic_df['survived'],0)
 ```
 
 ## Exercise 3
@@ -131,31 +130,25 @@ Now construct a dictionary based data structure that stores all possible class c
 def class_conditional(X,y):
   ???
   return probs
-  
-def prior(y):
-  ???
-  return probs
 </pre>
 
 ```python
 # YOUR SOLUTION HERE
 display(class_conditional(titanic_df.drop("survived",axis=1),titanic_df["survived"]))
 display(class_conditional(titanic_df.drop("survived",axis=1),titanic_df["survived"],yname="survived"))
-
-display(prior(titanic_df["survived"],yname="survived"))
 ```
 
 ## Exercise 4
-Now you are ready to calculate the posterior probabilities for a given sample. Write and test the following function that returns a dictionary where the keys are of the form "pclass=1,sex=male,age=60|survived=0". Make sure you return 0 if the specific combination of values does not exist.
+Now you are ready to calculate the posterior probabilities for a given sample. Write and test the following function that returns a dictionary where the keys are of the form "survived=0|pclass=1,sex=male,age=60". Make sure you return 0 if the specific combination of values does not exist.
 <pre>
-def posteriors(probs,priors,x):
-    return probs
+def posterior(probs,priors,x):
+    return posteriors
 </pre>
 
 ```python
 # YOUR SOLUTION HERE
 probs = class_conditional(titanic_df.drop("survived",axis=1),titanic_df["survived"],yname="survived")
-priors = prior(titanic_df["survived"],yname="survived")
+priors = compute_priors(titanic_df["survived"],yname="survived")
 posteriors(probs,priors,titanic_df.drop("survived",axis=1).loc[0])
 ```
 
@@ -176,12 +169,8 @@ Xtrain,ytrain,Xtest,ytest
 For this exercise, find the conditional probabilities and the priors using a training dataset of size 70% and then using these probabilities find the accuracy if they are used to predict the test dataset. 
 
 ```python
-Xtest
-```
-
-```python
-# YOUR SOLUTION HERE
 Xtrain,ytrain,Xtest,ytest=train_test_split(titanic_df.drop("survived",axis=1),titanic_df["survived"])
+# YOUR SOLUTION HERE
 ```
 
 ## Exercise 7
@@ -189,6 +178,8 @@ For this exercise, you must improve/extend your methods above as necessary to co
 
 ```python
 # YOUR SOLUTION HERE
+print("Test set accuracy:",sum(predictions==ytest)/len(ytest))
+pd.DataFrame({'prediction':predictions,'activity':ytest})
 ```
 
 ## Excercises 8
