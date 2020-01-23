@@ -247,13 +247,6 @@ c.i. = f +- z*sqrt( f*(1-f) / N )
 where f is the fraction of errors (1-accuracy) and N is the number of samples.
 
 ```python
-def confidence_interval(y,z=1.64):
-    ypred = y.value_counts().idxmax()
-    acc = sum(ypred == y)/len(y)
-    f = 1-acc
-    lower = f - z*np.sqrt(f*(1-f)/len(y))
-    upper = f + z*np.sqrt(f*(1-f)/len(y))
-    return lower,upper
 # YOUR SOLUTION HERE
 display(confidence_interval(titanic_df['survived']))
 display(confidence_interval(pd.Series([0,0,0,1,1,1])))
