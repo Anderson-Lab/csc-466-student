@@ -74,11 +74,6 @@ titanic_df = pd.read_csv(
 titanic_df.head()
 ```
 
-```python
-x=titanic_df.drop("survived",axis=1).loc[0]
-display(x)
-```
-
 We only need a few columns, and I will also perform some preprocessing for you:
 
 ```python
@@ -117,7 +112,7 @@ compute_priors(titanic_df['survived'],yname='survived')
 ## Exercise 2
 The next function to implement is the specific class conditional probability:
 <pre>
-def specific_class_conditional(y,yv,x,xv):
+def specific_class_conditional(x,xv,y,yv):
   ???
   return prob
 </pre>
