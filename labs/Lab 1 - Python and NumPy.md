@@ -169,11 +169,6 @@ titanic_df.set_index('sex',inplace=True)
 How do you reset the index?
 
 ```python
-titanic_df.reset_index(inplace=True)
-
-```
-
-```python
 ## YOUR SOLUTION HERE
 ```
 

@@ -279,7 +279,7 @@ Now we can put together a pruning algorithm. Please implement statistical prunin
 The heart of the statistical pruning technique is the calculation of a confidence interval for the error rate. In brief, one starts from an observed error rate f measured over the set of N training instances. In order to decide whether to replace a near-leaf node and its child leaves by a single leaf node, C4.5 compares the upper limits of the error confidence intervals for the two trees. For the unpruned tree, the upper error estimate is calculated as a weighted average over its child leaves (what you implemented above). Whichever tree has a lower estimated upper limit on the error rate "wins" and is selected.
 
 <pre>
-def generate_rules(tree,rules=[]):
+def generate_rules(tree):
    ???
    
 def prune_rules(rules,X,y):
@@ -383,8 +383,11 @@ def f1(y,ypred,pos_label):
 
 ```python
 # YOUR SOLUTION HERE
-```
-
-```python
-
+np.random.seed(101)
+X = titanic_df.drop('survived',axis=1)
+y = titanic_df['survived'].astype(str)
+predictions = X.apply(lambda x: np.random.choice(['0','1']),axis=1)
+print('Precision',precision(predictions,y,'1'))
+print('Recall',recall(predictions,y,'1'))
+print('f1',f1(predictions,y,'1'))
 ```
