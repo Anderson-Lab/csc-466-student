@@ -242,8 +242,6 @@ errors = pd.DataFrame(errors)
 ```python
 num_iterations = 10
 percent_diff_score = {}
-iterations = {}
-experiments = {}
 for iteration in range(num_iterations):
     Xtrain, Xtest, ytrain, ytest = train_test_split(X,y,test_size=0.10,shuffle=True)
     # YOUR SOLUTION HERE
@@ -329,4 +327,8 @@ for desc in ['sklearn GB','Our Gradient Boosting']:
         # YOUR SOLUTION HERE
 errors = pd.DataFrame(errors)
 errors.describe()
+```
+
+```python
+
 ```
