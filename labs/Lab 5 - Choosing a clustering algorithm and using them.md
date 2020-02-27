@@ -267,7 +267,7 @@ for n_clusters in range_n_clusters:
                 c=colors, edgecolor='k')
 
     # Labeling the clusters
-    centers = clusterer.cluster_centers_
+    centers = kmeans_models[n_clusters].cluster_centers_
     # Draw white circles at cluster centers
     centers_pca = pca.transform(centers)
     ax2.scatter(centers_pca[:, 0], centers_pca[:, 1], marker='o',
