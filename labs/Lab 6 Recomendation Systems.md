@@ -328,8 +328,8 @@ mae = predict_user_user(data,data.loc[1])
 mae
 ```
 
-## Exercise 4 (Worth 5 extra credit points)
-Combine in sequence item-item and user-user OR user-user and item-item.
+## Exercise 4 (Worth 5-10 extra credit points for one or both implementions)
+Combine in sequence item-item and user-user AND/OR user-user and item-item.
 
 ```python
 
