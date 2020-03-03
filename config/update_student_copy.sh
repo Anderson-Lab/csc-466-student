@@ -4,6 +4,7 @@ cp -Rp book ../$FOLDER/
 cp -Rp labs ../$FOLDER/
 cp -Rp config ../$FOLDER/
 cp -Rp lectures ../$FOLDER/
+cp -Rp data ../$FOLDER/
 find ../$FOLDER/ -name ".ipy*" -exec rm -rf {} \;
 
 # TODO go through every md file and remove certain sections
