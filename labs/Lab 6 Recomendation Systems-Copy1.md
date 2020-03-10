@@ -110,7 +110,15 @@ data
 First let's look at code that centers the data (important for cosine distance) and then fills in missing values as 0.
 
 ```python
-data_centered = data-data.mean()
+data.shape
+```
+
+```python
+data.mean().shape
+```
+
+```python
+data_centered = (data.T-data.mean(axis=1)).T
 data_centered = data_centered.fillna(0)
 data_centered
 ```
@@ -170,7 +178,7 @@ def predict_user_user(data_raw,x_raw,N=10,frac=0.02):
     # are predicting:
     db = data_raw.drop(x_raw.name)
     # We of course want to center and fill in missing values
-    db = (db-db.mean()).fillna(0)
+    db = (db.T-db.T.mean()).fillna(0).T
     # Now this is a little tricky to think about, but we want to create a train test split of the movies
     # that user x_raw.name has rated. We need some of them but want some of them removed for testing.
     # This is where the frac parameter is used. I want you to think about how to select movies for training
@@ -222,7 +230,7 @@ def predict_item_item(data_raw,x_raw,N=10,frac=0.02,debug={}):
     x_raw_test = x_raw.loc[ix_raw_test]
     
     db = data_raw.drop(x_raw.name)
-    db = (db-db.mean()).fillna(0)
+    db = (db.T-db.T.mean()).fillna(0).T
     # ??? db = FIX DB SO WE CAN KEEP CODE SIMILAR BUT DO ITEM-ITEM ???
     preds = []
     for movie in ix_raw_test:
@@ -266,7 +274,7 @@ def predict_item_item(data_raw,x_raw,N=10,frac=0.02,debug={}):
     x_raw_test = x_raw.loc[ix_raw_test]
     
     db = data_raw.drop(x_raw.name)
-    db = (db-db.mean()).fillna(0)
+    db = (db.T-db.T.mean()).fillna(0).T
     # ??? db = FIX DB SO WE CAN KEEP CODE SIMILAR BUT DO ITEM-ITEM ???
     preds = []
     for movie in ix_raw_test:
@@ -287,7 +295,7 @@ def predict_user_user(data_raw,x_raw,N=10,frac=0.02):
     # are predicting:
     db = data_raw.drop(x_raw.name)
     # We of course want to center and fill in missing values
-    db = (db-db.mean()).fillna(0)
+    db = (db.T-db.T.mean()).fillna(0).T
     # Now this is a little tricky to think about, but we want to create a train test split of the movies
     # that user x_raw.name has rated. We need some of them but want some of them removed for testing.
     # This is where the frac parameter is used. I want you to think about how to select movies for training
