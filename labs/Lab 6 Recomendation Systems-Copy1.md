@@ -162,32 +162,30 @@ db.loc[userIds].mean()+data.loc[1].mean()
 db.loc[userIds].multiply(sorted_sims.iloc[:N],axis=0).sum()/sorted_sims.iloc[:N].sum()+data.loc[1].mean()
 ```
 
-## Finally to the exercises!
-I want you to implement user-user, item-item, and a combination of item-item and user-user.
+## User-user small dataset example
 
 ```python
+# grab some movies that were watched a lot
 r=(data > 0).sum()
-```
-
-```python
 our_movies = r.sort_values(ascending=False).iloc[:10].index
-```
-
-```python
 our_movies
 ```
 
 ```python
-our_data = data[our_movies]
+our_data = data[our_movies] # grab only those movies
 ```
 
 ```python
+# Now grab just the users
 our_users = (our_data>0).sum(axis=1).sort_values(ascending=False).iloc[:10].index
 ```
 
 ```python
 test_data = our_data.loc[our_users]
+test_data
 ```
+
+It doesn't serve our purpose to have no missing values, so let's put some back in.
 
 ```python
 test_data.iloc[0,8] = np.NaN
@@ -205,48 +203,47 @@ test_data
 ```
 
 ```python
-test_data = (test_data.T-test_data.T.mean()).T
-test_data.loc[610].mean()
+test_data = (test_data.T-test_data.T.mean()).T # mean center everything
+test_data.loc[610].mean() # check the mean of user 610
 ```
 
 ```python
-x_raw = test_data.loc[610]
+x_raw = test_data.loc[610] # x_raw is a user
 x_raw
 ```
 
 ```python
-data_raw = test_data
-test_data = test_data.fillna(0)
+data_raw = test_data # keep a copy of test_data that doesn't have any missing values
+test_data = test_data.fillna(0) # fill in missing values
 ```
 
 ```python
-train_movies, test_movies = train_test_split(x_raw.dropna(),test_size=0.2)
+# we need to split this up into training and test sets
+train_movies, test_movies = train_test_split(x_raw.dropna(),test_size=0.2,random_state=1)
 display(train_movies)
 display(test_movies)
 ```
 
 ```python
-train_movies, test_movies = train_test_split(x_raw.dropna().index,test_size=0.2)
+# but we just wanted the movies and not the ratings
+train_movies, test_movies = train_test_split(x_raw.dropna().index,test_size=0.2,random_state=1)
+print('Training movies')
 display(train_movies)
+print('Testing movies')
 display(test_movies)
 ```
 
 ```python
-db = test_data.drop(x_raw.name)
+test_data
+```
+
+```python
+db = test_data.drop(x_raw.name) # remove this user
 db
 ```
 
 ```python
-db = test_data.drop(x_raw.name)[train_movies]
-db
-```
-
-```python
-db
-```
-
-```python
-movie = ('rating',527)
+movie = ('rating',527) # pick a movie in our test set
 display(db)
 db_subset = db.loc[np.isnan(data_raw.drop(x_raw.name)[movie])==False]
 display(db_subset)
@@ -284,6 +281,10 @@ test_data.loc[neighbors,movie].mean()
 ```python
 x_raw.loc[movie]
 ```
+
+
+## Finally to the exercises!
+I want you to implement user-user, item-item, and a combination of item-item and user-user.
 
 
 ## Exercise 1 (Worth 5 points)
@@ -458,6 +459,7 @@ Combine in sequence item-item and user-user AND/OR user-user and item-item.
 
 ```python
 %%capture
+## YOUR SOLUTION HERE
 ```
 
 ```python
