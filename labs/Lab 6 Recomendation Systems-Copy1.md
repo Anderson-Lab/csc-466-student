@@ -166,8 +166,125 @@ db.loc[userIds].multiply(sorted_sims.iloc[:N],axis=0).sum()/sorted_sims.iloc[:N]
 I want you to implement user-user, item-item, and a combination of item-item and user-user.
 
 ```python
-data
+r=(data > 0).sum()
 ```
+
+```python
+our_movies = r.sort_values(ascending=False).iloc[:10].index
+```
+
+```python
+our_movies
+```
+
+```python
+our_data = data[our_movies]
+```
+
+```python
+our_users = (our_data>0).sum(axis=1).sort_values(ascending=False).iloc[:10].index
+```
+
+```python
+test_data = our_data.loc[our_users]
+```
+
+```python
+test_data.iloc[0,8] = np.NaN
+test_data.iloc[1,8] = np.NaN
+test_data.iloc[0,6] = np.NaN
+test_data.iloc[5,8] = np.NaN
+test_data.iloc[0,2] = np.NaN
+test_data.iloc[3,8] = np.NaN
+test_data.loc[274,('rating',593)] = np.NaN
+test_data.loc[274,('rating',527)] = np.NaN
+```
+
+```python
+test_data
+```
+
+```python
+test_data = (test_data.T-test_data.T.mean()).T
+test_data.loc[610].mean()
+```
+
+```python
+x_raw = test_data.loc[610]
+x_raw
+```
+
+```python
+data_raw = test_data
+test_data = test_data.fillna(0)
+```
+
+```python
+train_movies, test_movies = train_test_split(x_raw.dropna(),test_size=0.2)
+display(train_movies)
+display(test_movies)
+```
+
+```python
+train_movies, test_movies = train_test_split(x_raw.dropna().index,test_size=0.2)
+display(train_movies)
+display(test_movies)
+```
+
+```python
+db = test_data.drop(x_raw.name)
+db
+```
+
+```python
+db = test_data.drop(x_raw.name)[train_movies]
+db
+```
+
+```python
+db
+```
+
+```python
+movie = ('rating',527)
+display(db)
+db_subset = db.loc[np.isnan(data_raw.drop(x_raw.name)[movie])==False]
+display(db_subset)
+
+#sims = db.loc[np.isnan(data_raw.drop(x_raw.name)[movie]) == False].apply(lambda y: (y.values*x.values).sum()/(np.sqrt((y**2).sum())*np.sqrt((x**2).sum())),axis=1)
+
+```
+
+```python
+x = x_raw.loc[train_movies]
+x
+```
+
+```python
+sims = db_subset.apply(lambda y: (y.values*x.values).sum()/(np.sqrt((y**2).sum())*np.sqrt((x**2).sum())),axis=1)
+```
+
+```python
+sims.sort_values(ascending=False).iloc[:2]
+```
+
+```python
+neighbors = sims.sort_values(ascending=False).iloc[:2].index
+neighbors
+```
+
+```python
+test_data.loc[neighbors,movie]
+```
+
+```python
+test_data.loc[neighbors,movie].mean()
+```
+
+```python
+x_raw.loc[movie]
+```
+
 
 ## Exercise 1 (Worth 5 points)
 Complete the following function that predicts using user-user collaborative filtering. 
@@ -338,6 +455,10 @@ mae
 
 ## Exercise 4 (Worth 5-10 extra credit points for one or both implementions)
 Combine in sequence item-item and user-user AND/OR user-user and item-item.
+
+```python
+%%capture
+```
 
 ```python
 
