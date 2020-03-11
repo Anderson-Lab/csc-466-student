@@ -105,6 +105,17 @@ data=data.unstack()
 data
 ```
 
+```python
+data.columns
+```
+
+```python
+# So it seems like having this extra 'rating' string is confusing folks a bit
+# I'm going to just change it, but leave it as a tuple because it is important to realize that tuples can be indices and columns
+data.columns = pd.MultiIndex.from_tuples([('movie',v[1]) for v in data.columns])
+data.columns
+```
+
 ## Let's take a look at some useful code together before the exercises.
 
 First let's look at code that centers the data (important for cosine distance) and then fills in missing values as 0.
@@ -194,8 +205,8 @@ test_data.iloc[0,6] = np.NaN
 test_data.iloc[5,8] = np.NaN
 test_data.iloc[0,2] = np.NaN
 test_data.iloc[3,8] = np.NaN
-test_data.loc[274,('rating',593)] = np.NaN
-test_data.loc[274,('rating',527)] = np.NaN
+test_data.loc[274,('movie',593)] = np.NaN
+test_data.loc[274,('movie',527)] = np.NaN
 ```
 
 ```python
@@ -243,45 +254,165 @@ db
 ```
 
 ```python
-movie = ('rating',527) # pick a movie in our test set
+movie = ('movie',527) # pick a movie in our test set
 display(db)
+# We should remove any users that did not rate the movie we are interested in predicting. How would including them help us?
 db_subset = db.loc[np.isnan(data_raw.drop(x_raw.name)[movie])==False]
 display(db_subset)
-
-#sims = db.loc[np.isnan(data_raw.drop(x_raw.name)[movie]) == False].apply(lambda y: (y.values*x.values).sum()/(np.sqrt((y**2).sum())*np.sqrt((x**2).sum())),axis=1)
-
 ```
 
 ```python
-x = x_raw.loc[train_movies]
+# In order to make the cosine similarity work, we need to have the same dimensions in db_subset and x
+# But we want to make sure that the test movies are removed because well they are for testing purposes
+x = x_raw.copy()
+x.loc[test_movies] = np.NaN
+x = x.fillna(0)
 x
 ```
 
 ```python
+# Now we can actually compute the cosine similarity. This apply function is basically just a for loop over each user
 sims = db_subset.apply(lambda y: (y.values*x.values).sum()/(np.sqrt((y**2).sum())*np.sqrt((x**2).sum())),axis=1)
 ```
 
 ```python
-sims.sort_values(ascending=False).iloc[:2]
+N = 2 # Set the neighborhood to 2 and select the users after sorting
+sims.sort_values(ascending=False).iloc[:N]
 ```
 
 ```python
-neighbors = sims.sort_values(ascending=False).iloc[:2].index
+# But we don't want the similarity scores, just the user ids
+neighbors = sims.sort_values(ascending=False).iloc[:N].index
 neighbors
 ```
 
 ```python
+# How did our neighborhood rank that movie?
 test_data.loc[neighbors,movie]
 ```
 
 ```python
-test_data.loc[neighbors,movie].mean()
+# Finally! Here is our prediction (unweighted)
+pred = test_data.loc[neighbors,movie].mean()
+pred
 ```
 
 ```python
-x_raw.loc[movie]
+# What about weighted?
+top_sims = sims.sort_values(ascending=False).iloc[:N]
+top_sims
 ```
 
+```python
+# Here is our prediction with weighting
+weighted_pred = test_data.loc[neighbors,movie].multiply(top_sims,axis=0).sum()/top_sims.sum()
+weighted_pred
+```
+
+```python
+# How does this compare?
+actual = x_raw.loc[movie]
+actual
+```
+
+
+```python
+print("MAE of unweighted:",np.abs(actual-pred))
+print("MAE of weighted:",np.abs(actual-weighted_pred))
+```
+
+## Item-item on the same small dataset
+Let's review what we have from above that becomes our input
+
+```python
+data_raw
+```
+
+```python
+# We are going to need to transform this
+data_raw.T
+```
+
+```python
+x_raw
+```
+
+```python
+train_movies
+```
+
+```python
+test_movies
+```
+
+```python
+# This is the movie we are still trying to predict (i.e., from the testing set we pick the first one)
+movie
+```
+
+The intuition behind item-item is we want to predict the rating of a movie based on user 610's ratings on similar movies. In other words, if we knew that most similar movies to 527 were 356, 318, and 296, then we would calculate our prediction like this:
+
+```python
+# the use of 'rating' is just an artifact of pandas transformations
+ids = [('movie',356),('movie',318),('movie',296)]
+x_raw.loc[ids]
+```
+
+```python
+# so we could predict like this
+x_raw.loc[ids].mean()
+```
+
+```python
+# but wait, why would we even includ movie 296? The above mean ignores this in the calculation,
+# so it is better to just prevent this from happening, we can do that when we search the neighborhood!
+```
+
+```python
+test_data = data_raw.T.fillna(0)
+test_data
+```
+
+```python
+# The following three lines are the same as the single line left below
+x = test_data.loc[movie].drop(x_raw.name)
+x
+```
+
+```python
+db_subset = test_data.loc[train_movies].drop(x_raw.name,axis=1)
+db_subset
+```
+
+```python
+sims = db_subset.apply(lambda y: (y.values*x.values).sum()/(np.sqrt((y**2).sum())*np.sqrt((x**2).sum())),axis=1)
+sims
+```
+
+```python
+top_sims = sims.sort_values(ascending=False).iloc[:N]
+top_sims
+```
+
+```python
+ids = top_sims.index
+ids
+```
+
+```python
+pred = x_raw.loc[ids].mean()
+pred
+```
+
+```python
+weighted_pred = x_raw.loc[ids].multiply(top_sims,axis=0).sum()/top_sims.sum()
+weighted_pred
+```
+
+```python
+print("MAE of unweighted:",np.abs(actual-pred))
+print("MAE of weighted:",np.abs(actual-weighted_pred))
+```
 
 ## Finally to the exercises!
 I want you to implement user-user, item-item, and a combination of item-item and user-user.
